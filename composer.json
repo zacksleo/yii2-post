@@ -1,0 +1,24 @@
+{
+  "name": "zacksleo/yii2-post",
+  "description": "yii2 post module",
+  "type": "yii2-extension",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "zacksleo",
+      "email": "zacksleo@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "yiisoft/yii2": "*",
+    "kartik-v/yii2-widget-fileinput": "^1.0",
+    "mongosoft/yii2-upload-behavior": "^0.1",
+    "kucha/ueditor": "^1.21"
+  },
+  "autoload": {
+    "psr-4": {
+      "zacksleo\\yii2\\post\\": "src"
+    }
+  }
+}
