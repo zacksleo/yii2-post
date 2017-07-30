@@ -11,7 +11,6 @@ return [
     'views' => '访问量',
     'order' => '排序',
     'content' => '内容',
-    'status' => '状态',
     'created at' => '创建时间',
     'updated at' => '更新时间',
     'File' => '文件',
