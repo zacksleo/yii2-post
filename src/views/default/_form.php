@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\file\FileInput;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
 /* @var $form yii\widgets\ActiveForm */
@@ -21,7 +22,7 @@ use kartik\file\FileInput;
             'previewFileType' => 'image',
             // 需要展示的图片设置，比如图片的宽度等
             'initialPreview' => [
-                $_ENV['APP_HOST'].'uploads/'.$model->img,
+                $_ENV['APP_HOST'] . 'uploads/' . $model->img,
             ],
             'initialPreviewAsData' => true,
             'showRemove' => true,
@@ -32,8 +33,8 @@ use kartik\file\FileInput;
     ])->hint('在此上传图片'); ?>
     <?= $form->field($model, 'views')->textInput() ?>
     <?= $form->field($model, 'order')->textInput() ?>
-    <?= $form->field($model, 'status')->radioList(['0'=>'下线','1'=>'上线']) ?>
-    <?= $form->field($model, 'content')->widget('kucha\ueditor\UEditor',[]) ?>
+    <?= $form->field($model, 'status')->radioList(['0' => '下线', '1' => '上线']) ?>
+    <?= $form->field($model, 'content')->widget('kucha\ueditor\UEditor', []) ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '创建' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

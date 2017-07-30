@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
 $this->title = $model->title;
@@ -26,35 +27,35 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'content',
             [
-                'label'=>'缩略图',
-                'format'=>[
+                'label' => '缩略图',
+                'format' => [
                     "image",
                     [
-                        "width"=>"84",
-                        "height"=>"84",
+                        "width" => "84",
+                        "height" => "84",
                     ]
                 ],
-                'value'=> function($model){
-                    return $_ENV['APP_HOST'].'uploads/'.$model->img;
+                'value' => function ($model) {
+                    return $_ENV['APP_HOST'] . 'uploads/' . $model->img;
                 }
             ],
             'views',
             'order',
             'status',
             [
-                'attribute'=>'created_at',
-                'label'=>'修改时间',
-                'value'=>
-                    function($model){
-                        return date('Y-m-d H:i:s',$model->updated_at);
+                'attribute' => 'created_at',
+                'label' => '修改时间',
+                'value' =>
+                    function ($model) {
+                        return date('Y-m-d H:i:s', $model->updated_at);
                     }
             ],
             [
-                'attribute'=>'updated_at',
-                'label'=>'修改时间',
-                'value'=>
-                    function($model){
-                        return date('Y-m-d H:i:s',$model->updated_at);
+                'attribute' => 'updated_at',
+                'label' => '修改时间',
+                'value' =>
+                    function ($model) {
+                        return date('Y-m-d H:i:s', $model->updated_at);
                     }
             ],
         ],
