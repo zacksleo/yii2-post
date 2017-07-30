@@ -159,4 +159,12 @@ class Post extends \yii\db\ActiveRecord
     {
         return $_ENV['APP_HOST'] . '/post/view?id=' . $this->id;
     }
+
+    public static function getStatusList()
+    {
+        return [
+            self::STATUS_INACTIVE => Module::t('post', 'offline'),
+            self::STATUS_ACTIVE => Module::t('post', 'online'),
+        ];
+    }
 }

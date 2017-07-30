@@ -3,9 +3,10 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\file\FileInput;
 use zacksleo\yii2\post\Module;
+use zacksleo\yii2\post\models\Post;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Post */
+/* @var $model zacksleo\yii2\post\models\Post */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="post-form">
@@ -34,7 +35,7 @@ use zacksleo\yii2\post\Module;
     ])->hint('在此上传图片'); ?>
     <?= $form->field($model, 'views')->textInput() ?>
     <?= $form->field($model, 'order')->textInput() ?>
-    <?= $form->field($model, 'status')->radioList(['0' => '下线', '1' => '上线']) ?>
+    <?= $form->field($model, 'status')->radioList(Post::getStatusList()) ?>
     <?= $form->field($model, 'content')->widget('kucha\ueditor\UEditor', []) ?>
     <div class="form-group">
         <?= Html::submitButton(Module::t('post', $model->isNewRecord ? 'Create' : 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

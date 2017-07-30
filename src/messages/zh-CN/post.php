@@ -14,4 +14,6 @@ return [
     'created at' => '创建时间',
     'updated at' => '更新时间',
     'File' => '文件',
+    'online' => '上线',
+    'offline' => '下线',
 ];
