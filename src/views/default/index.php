@@ -37,49 +37,30 @@ ClipboardAsset::register($this);
                     return $_ENV['APP_HOST'] . 'uploads/' . $model->img;
                 }
             ],
-            [
-                'attribute' => 'title',
-                'label' => '标题',
-                'value' =>
-                    function ($model) {
-                        return $model->title;
-                    }
-            ],
-            [
-                'attribute' => 'order',
-                'label' => '权重',
-                'value' =>
-                    function ($model) {
-                        return $model->order;
-                    }
-            ],
-            [
-                'attribute' => 'updated_at',
-                'label' => '修改时间',
-                'value' =>
-                    function ($model) {
-                        return date('Y-m-d H:i:s', $model->updated_at);
-                    }
-            ],
+            'title',
+            'order',
+            'updated_at:date',
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update} {delete} {up} {url}',
                 'buttons' => [
                     'up' => function ($url, $model, $key) {
                         if ($model->status == 1) {
-                            return Html::tag('span id="status_' . $model->id . '" class="glyphicon glyphicon-ok color-blue"  title="状态" aria-label="状态" onclick="setStatus(' . $model->id . ',0)"></span');
+                            $span = Html::tag('a id="status_' . $model->id . '" class="glyphicon glyphicon-ok color-blue"  title="状态" aria-label="状态" onclick="setStatus(' . $model->id . ',0)"></a');
+                            return Html::a($span, '#');
                         } else {
-                            return Html::tag('span id="status_' . $model->id . '" class="glyphicon glyphicon-remove color-blue" title="状态" aria-label="状态" onclick="setStatus(' . $model->id . ',1)"></span');
+                            $span = Html::tag('a id="status_' . $model->id . '" class="glyphicon glyphicon-remove color-blue" title="状态" aria-label="状态" onclick="setStatus(' . $model->id . ',1)"></a');
+                            return Html::a($span, '#');
                         }
                     },
                     'url' => function ($url, $model, $key) {
-                        return Html::tag('span class="glyphicon glyphicon-link color-blue" title="拷贝链接" aria-label="拷贝链接"onclick="copyUrl(' . $model->id . ')"></span');
+                        $span = Html::tag('a class="glyphicon glyphicon-link color-blue" title="拷贝链接" aria-label="拷贝链接" onclick="copyUrl(\'' . $model->url . '\')"></a');
+                        return Html::a($span, '#');
                     }
                 ]
             ],
         ],
     ]); ?>
 </div>
-<input type="hidden" id="url" value="<?php echo $_ENV['APP_HOST']; ?>">
 <script type="text/javascript">
     /**
      * @brief 修改文章的状态是否显示
@@ -112,9 +93,7 @@ ClipboardAsset::register($this);
             }
         });
     }
-    function copyUrl(id) {
-        var url = $("#url").val() + "post/view?id=" + id;
-        //var url="localhost/post/view?id="+id;
+    function copyUrl(url) {
         clipboard.copy(url).then(
             function () {
                 alert("复制成功");

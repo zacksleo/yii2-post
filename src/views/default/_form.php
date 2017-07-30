@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\file\FileInput;
+use zacksleo\yii2\post\Module;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
@@ -36,7 +37,7 @@ use kartik\file\FileInput;
     <?= $form->field($model, 'status')->radioList(['0' => '下线', '1' => '上线']) ?>
     <?= $form->field($model, 'content')->widget('kucha\ueditor\UEditor', []) ?>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '创建' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton(Module::t('post', $model->isNewRecord ? 'Create' : 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

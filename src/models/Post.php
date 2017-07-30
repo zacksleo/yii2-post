@@ -4,8 +4,10 @@ namespace zacksleo\yii2\post\models;
 
 use common\helpers\files\File;
 use Yii;
+use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\behaviors\TimestampBehavior;
+use zacksleo\yii2\post\Module;
 
 /**
  * This is the model class for table "{{%post}}".
@@ -59,15 +61,15 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => '标题',
-            'img' => '图片',
-            'views' => '访问量',
-            'content' => '内容',
-            'created_at' => '创建时间',
-            'updated_at' => '更新时间',
-            'imgFile' => '封面',
-            'order' => '排序权重',
-            'status' => '状态',
+            'title' => Module::t('post', 'title'),
+            'img' => Module::t('post', 'img'),
+            'views' => Module::t('post', 'views'),
+            'content' => Module::t('post', 'content'),
+            'created_at' => Module::t('post', 'created at'),
+            'updated_at' => Module::t('post', 'updated at'),
+            'imgFile' => Module::t('post', 'File'),
+            'order' => Module::t('post', 'order'),
+            'status' => Module::t('post', 'status'),
         ];
     }
 
@@ -138,11 +140,11 @@ class Post extends \yii\db\ActiveRecord
     {
         $fields = parent::fields();
         $fields['img'] = function ($fields) {
-            $url = $_ENV['APP_HOST'].'uploads/'.$fields['img'];
+            $url = $_ENV['APP_HOST'] . 'uploads/' . $fields['img'];
             return $url;
         };
         $fields['url'] = function ($fields) {
-            $url = $_ENV['APP_HOST'].'post/view'."?id=".$fields['id'];
+            $url = $_ENV['APP_HOST'] . 'post/view' . "?id=" . $fields['id'];
             return $url;
         };
         unset($fields['id'], $fields['created_at'], $fields['updated_at']);
@@ -151,5 +153,10 @@ class Post extends \yii\db\ActiveRecord
             unset($fields['content'], $fields['order'], $fields['status']);
         }
         return $fields;
+    }
+
+    public function getUrl()
+    {
+        return $_ENV['APP_HOST'] . '/post/view?id=' . $this->id;
     }
 }

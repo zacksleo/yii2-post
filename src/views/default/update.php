@@ -1,18 +1,18 @@
 <?php
 
 use yii\helpers\Html;
+use zacksleo\yii2\post\Module;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
 
-$this->title = 'Update Post: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
+$this->title = Yii::t('yii', 'Update');
+$this->params['breadcrumbs'][] = ['label' => Module::t('post', 'Posts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="post-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
