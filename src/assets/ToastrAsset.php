@@ -5,18 +5,25 @@ namespace zacksleo\yii2\post\assets;
 use yii\web\AssetBundle;
 use yii\web\View;
 
-class ClipboardAsset extends AssetBundle
+class ToastrAsset extends AssetBundle
 {
-    public $sourcePath = '@npm/clipboard';
+    public $sourcePath = '@npm/toastr';
     public $publishOptions = [
         'only' => [
-            'dist/*',
+            'build/*',
         ]
     ];
+    public $css = [
+        'build/toastr.min.css'
+    ];
     public $js = [
-        "dist/clipboard.min.js"
+        'build/toastr.min.js'
     ];
     public $jsOptions = [
         'position' => View::POS_END
+    ];
+
+    public $depends = [
+        'yii\web\JqueryAsset',
     ];
 }

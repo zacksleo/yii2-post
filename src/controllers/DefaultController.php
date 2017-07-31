@@ -14,20 +14,6 @@ use yii\filters\VerbFilter;
  */
 class DefaultController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
     //todo 前缀名要修改
     public function actions()
     {
@@ -35,7 +21,7 @@ class DefaultController extends Controller
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
                 'config' => [
-                    "imageUrlPrefix"  => Yii::$app->request->hostInfo,//图片访问路径前缀
+                    "imageUrlPrefix" => Yii::$app->request->hostInfo,//图片访问路径前缀
                     "imagePathFormat" => "/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", //上传保存路径
                     "imageRoot" => Yii::getAlias("@webroot"),
                 ],
@@ -53,7 +39,7 @@ class DefaultController extends Controller
             'query' => Post::find(),
             'sort' => [
                 'defaultOrder' => [
-                    'created_at'=> SORT_DESC
+                    'created_at' => SORT_DESC
                 ]
             ]
         ]);
@@ -83,6 +69,7 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new Post();
+        $model->setScenario('insert');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -101,7 +88,7 @@ class DefaultController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -149,13 +136,13 @@ class DefaultController extends Controller
      */
     public function actionStatus($id, $status)
     {
-        $model=$this->findModel($id);
-        $model->status=$status;
+        $model = $this->findModel($id);
+        $model->status = $status;
         $model->save();
-        if ($model!==false) {
-            $message=[ 'status'=>1, 'message'=>"修改成功" ];
+        if ($model !== false) {
+            $message = ['status' => 1, 'message' => "修改成功"];
         } else {
-            $message=[ 'status'=>0, 'message'=>"修改失败" ];
+            $message = ['status' => 0, 'message' => "修改失败"];
         }
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $message;

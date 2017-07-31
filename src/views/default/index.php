@@ -1,14 +1,19 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use zacksleo\yii2\post\assets\ClipboardAsset;
+use zacksleo\yii2\post\assets\ToastrAsset;
 use zacksleo\yii2\post\Module;
+use zacksleo\yii2\post\models\Post;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = Module::t('post', 'Posts');
 $this->params['breadcrumbs'][] = Module::t('post', 'Posts');
 ClipboardAsset::register($this);
+ToastrAsset::register($this);
 ?>
 <style type="text/css">
     .color-blue {
@@ -33,7 +38,7 @@ ClipboardAsset::register($this);
                     ]
                 ],
                 'value' => function ($model) {
-                    return $_ENV['APP_HOST'] . 'uploads/' . $model->img;
+                    return $model->getImgUrl();
                 }
             ],
             'title',
@@ -43,16 +48,16 @@ ClipboardAsset::register($this);
                 'template' => '{view} {update} {delete} {up} {url}',
                 'buttons' => [
                     'up' => function ($url, $model, $key) {
-                        if ($model->status == 1) {
-                            $span = Html::tag('a id="status_' . $model->id . '" class="glyphicon glyphicon-ok color-blue"  title="状态" aria-label="状态" onclick="setStatus(' . $model->id . ',0)"></a');
+                        if ($model->status == Post::STATUS_ACTIVE) {
+                            $span = Html::tag('a id="status_' . $model->id . '" class="glyphicon glyphicon-remove color-blue"  title="' . Module::t('post', 'offline') . '" onclick="setStatus(' . $model->id . ',0)"></a');
                             return Html::a($span, '#');
                         } else {
-                            $span = Html::tag('a id="status_' . $model->id . '" class="glyphicon glyphicon-remove color-blue" title="状态" aria-label="状态" onclick="setStatus(' . $model->id . ',1)"></a');
+                            $span = Html::tag('a id="status_' . $model->id . '" class="glyphicon glyphicon-ok color-blue" title="' . Module::t('post', 'online') . '" onclick="setStatus(' . $model->id . ',1)"></a');
                             return Html::a($span, '#');
                         }
                     },
                     'url' => function ($url, $model, $key) {
-                        $span = Html::tag('a class="glyphicon glyphicon-link color-blue" title="拷贝链接" aria-label="拷贝链接" onclick="copyUrl(\'' . $model->url . '\')"></a');
+                        $span = Html::tag('a class="glyphicon glyphicon-link color-blue cp" title="复制链接" data-clipboard-text="' . $model->url . '"></a');
                         return Html::a($span, '#');
                     }
                 ]
@@ -63,43 +68,60 @@ ClipboardAsset::register($this);
 <script type="text/javascript">
     /**
      * @brief 修改文章的状态是否显示
-     *
      * @param id
      * @param status 是否显示（1:显示0:不显示）
-     *
      * @return
      */
     function setStatus(id, status) {
         $.ajax({
             type: "GET",
-            url: "status",
+            url: "<?= Url::to(['status'])?>",
             data: {id: id, status: status},
             success: function (rep) {
                 if (rep.status === 1) {
                     if (status === 1) {
-                        $("#status_" + id).removeClass("glyphicon-remove").addClass("glyphicon-ok");
+                        $("#status_" + id).removeClass("glyphicon-ok").addClass("glyphicon-remove");
                         $("#status_" + id).attr("onclick", "setStatus(" + id + ",0)");
                     } else {
-                        $("#status_" + id).removeClass("glyphicon-ok").addClass("glyphicon-remove");
+                        $("#status_" + id).removeClass("glyphicon-remove").addClass("glyphicon-ok");
                         $("#status_" + id).attr("onclick", "setStatus(" + id + ",1)");
                     }
+                    toastr.success('设置成功');
                 } else {
-                    alert("修改失败");
+                    toastr.error('修改失败');
                 }
             },
             error: function (rep) {
-                alert("网络错误");
+                toastr.error('网络错误');
             }
         });
     }
-    function copyUrl(url) {
-        clipboard.copy(url).then(
-            function () {
-                alert("复制成功");
-            },
-            function (err) {
-                alert("复制失败");
-            }
-        );
-    }
 </script>
+<?php
+$js = <<<JS
+var clipboard = new Clipboard('.cp');
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "positionClass": "toast-top-right",
+  "onclick": null,
+  "showDuration": "1000",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
+clipboard.on('success', function(e) {
+    toastr.success('复制成功');    
+    e.clearSelection();
+});
+
+clipboard.on('error', function(e) {    
+    toastr.error('复制失败');
+});
+JS;
+$this->registerJs($js, View::POS_END);
+?>

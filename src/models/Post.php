@@ -8,6 +8,7 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\behaviors\TimestampBehavior;
 use zacksleo\yii2\post\Module;
+use zacksleo\yii2\post\behaviors\UploadBehavior;
 
 /**
  * This is the model class for table "{{%post}}".
@@ -44,11 +45,12 @@ class Post extends \yii\db\ActiveRecord
             [['title', 'content'], 'required'],
             [['views', 'order', 'status'], 'integer'],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
-            [['imgFile'], 'file',
+            [['img'], 'file',
                 'skipOnEmpty' => true,
-                'tooBig' => '文件大小不超过1M',
+                'extensions' => 'png, jpg, gif, jpeg, bmp, svg, webp',
                 'maxFiles' => 1,
-                'maxSize' => 10000000
+                'maxSize' => 300000,
+                'on' => ['insert', 'update']
             ],
         ];
     }
@@ -67,7 +69,6 @@ class Post extends \yii\db\ActiveRecord
             'content' => Module::t('post', 'content'),
             'created_at' => Module::t('post', 'created at'),
             'updated_at' => Module::t('post', 'updated at'),
-            'imgFile' => Module::t('post', 'File'),
             'order' => Module::t('post', 'order'),
             'status' => Module::t('post', 'status'),
         ];
@@ -81,77 +82,34 @@ class Post extends \yii\db\ActiveRecord
         return [
             'timestamp' => [
                 'class' => TimestampBehavior::className()
-            ]
+            ],
+            [
+                'class' => UploadBehavior::className(),
+                'attribute' => 'img',
+                'scenarios' => ['insert', 'update'],
+                'path' => '@frontend/web/uploads/galleries/posts',
+                'url' => '@web/uploads/galleries/posts',
+            ],
         ];
-    }
-
-    public function beforeValidate()
-    {
-        if (isset($_POST['Post']['imgFile'])) {
-            $file = UploadedFile::getInstance($this, 'imgFile');
-            if (!empty($file)) {
-                $this->imgFile = $file;
-            }
-        }
-        return parent::beforeValidate();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert)
-    {
-        if ($this->imgFile instanceof UploadedFile) {
-            if ($path = (new File($this->imgFile))->upload()) {
-                $this->img = $path;
-            } else {
-                $this->addError('imgFile', $this->imgFile->getHasError());
-                return false;
-            }
-        } else {
-            $this->img = $this->getOldAttribute('img');
-        }
-        return parent::beforeSave($insert);
-    }
-
-    public function beforeDelete()
-    {
-        $this->img = $this->getOldAttribute('img');
-        return parent::beforeDelete();
-    }
-
-    public function afterDelete()
-    {
-        File::delete($this->img);
-        parent::afterDelete();
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        if (!$insert) {
-            if (!empty($changedAttributes['img'])) {
-                File::delete($changedAttributes['img']);
-            }
-        }
-        parent::afterSave($insert, $changedAttributes);
     }
 
     public function fields()
     {
         $fields = parent::fields();
         $fields['img'] = function ($fields) {
-            $url = $_ENV['APP_HOST'] . 'uploads/' . $fields['img'];
+            $path = str_replace('api/uploads/', '', $this->getUploadUrl('img'));
+            if (isset($_ENV['API_HOST'])) {
+                $url = $_ENV['API_HOST'] . 'files/' . $path;
+            } else {
+                $url = Url::to(['file/view', 'path' => $path], true);
+            }
             return $url;
         };
         $fields['url'] = function ($fields) {
             $url = $_ENV['APP_HOST'] . 'post/view' . "?id=" . $fields['id'];
             return $url;
         };
-        unset($fields['id'], $fields['created_at'], $fields['updated_at']);
-        $request = Yii::$app->request;
-        if ($request->isGet) {
-            unset($fields['content'], $fields['order'], $fields['status']);
-        }
+        unset($fields['id'], $fields['created_at'], $fields['updated_at'], $fields['content'], $fields['order'], $fields['status']);
         return $fields;
     }
 
@@ -166,5 +124,10 @@ class Post extends \yii\db\ActiveRecord
             self::STATUS_INACTIVE => Module::t('post', 'offline'),
             self::STATUS_ACTIVE => Module::t('post', 'online'),
         ];
+    }
+
+    public function getImgUrl()
+    {
+        return $_ENV['APP_HOST'] . 'uploads/galleries/posts/' . $this->img;
     }
 }

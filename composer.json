@@ -15,7 +15,8 @@
     "kartik-v/yii2-widget-fileinput": "^1.0",
     "mongosoft/yii2-upload-behavior": "^0.1",
     "kucha/ueditor": "^1.21",
-    "npm-asset/clipboard-js": " 0.3.3"
+    "npm-asset/clipboard": "^1.7",
+    "npm-asset/toastr": "^2.1"
   },
   "autoload": {
     "psr-4": {

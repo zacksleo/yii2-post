@@ -1,15 +1,16 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use zacksleo\yii2\post\models\Post;
+use zacksleo\yii2\post\Module;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Post */
+/* @var $model \zacksleo\yii2\post\models\Post */
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('post', 'Posts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-view">
-    <h1><?= Html::encode($this->title) ?></h1>
     <p>
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
@@ -23,9 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'title',
-            'content',
+            'content:raw',
             [
                 'label' => '缩略图',
                 'format' => [
@@ -36,28 +36,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ],
                 'value' => function ($model) {
-                    return $_ENV['APP_HOST'] . 'uploads/' . $model->img;
+                    return $model->getImgUrl();
                 }
             ],
             'views',
             'order',
-            'status',
             [
-                'attribute' => 'created_at',
-                'label' => '修改时间',
-                'value' =>
-                    function ($model) {
-                        return date('Y-m-d H:i:s', $model->updated_at);
-                    }
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return Post::getStatusList()[$model->status];
+                }
             ],
-            [
-                'attribute' => 'updated_at',
-                'label' => '修改时间',
-                'value' =>
-                    function ($model) {
-                        return date('Y-m-d H:i:s', $model->updated_at);
-                    }
-            ],
+            'created_at:date',
+            'updated_at:date'
         ],
     ]) ?>
 </div>

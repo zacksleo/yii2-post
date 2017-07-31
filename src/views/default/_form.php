@@ -14,25 +14,22 @@ use zacksleo\yii2\post\models\Post;
         'options' => ['enctype' => 'multipart/form-data']
     ]); ?>
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'imgFile')->widget(FileInput::className(), [
+    <?= $form->field($model, 'img')->widget(FileInput::className(), [
         'options' => [
-            'accept' => 'png/*',
+            'accept' => 'apk/*',
             'multiple' => false
         ],
         'pluginOptions' => [
-            // 需要预览的文件格式
-            'previewFileType' => 'image',
-            // 需要展示的图片设置，比如图片的宽度等
             'initialPreview' => [
-                $_ENV['APP_HOST'] . 'uploads/' . $model->img,
+                $model->img,
             ],
-            'initialPreviewAsData' => true,
             'showRemove' => true,
-            'showPreview' => $model->isNewRecord ? false : true,
+            'showPreview' => false,
+            'initialPreviewAsData' => false,
             'initialCaption' => $model->img,
             'overwriteInitial' => false,
         ]
-    ])->hint('在此上传图片'); ?>
+    ])->hint('在此上传文件'); ?>
     <?= $form->field($model, 'views')->textInput() ?>
     <?= $form->field($model, 'order')->textInput() ?>
     <?= $form->field($model, 'status')->radioList(Post::getStatusList()) ?>
