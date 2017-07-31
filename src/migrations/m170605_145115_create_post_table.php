@@ -22,7 +22,7 @@ class m170605_145115_create_post_table extends Migration
             'img' => $this->string()->comment('图片'),
             'views' => $this->integer()->comment('访问量'),
             'order' => $this->smallInteger()->comment('序号'),
-            'status' => $this->boolean()->default(1)->comment('状态'),
+            'status' => $this->boolean()->defaultValue(1)->comment('状态'),
             'content' => $this->text()->comment('内容'),
             'created_at' => $this->integer()->comment('创建时间'),
             'updated_at' => $this->integer()->comment('更新时间'),
