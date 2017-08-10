@@ -108,10 +108,30 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
     protected function destroyTestDbData()
     {
-        $this->mockApplication()->runAction('/migrate/down',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
+         $db = Yii::$app->getDb();
+         $res = $db->createCommand()->dropTable('post')->execute();
+       // $this->mockApplication()->runAction('/migrate/down',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
     }
     protected function createTestDbData()
     {
-        $this->mockApplication()->runAction('/migrate/up',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
+         $db = Yii::$app->getDb();
+         try {
+             $db->createCommand()->createTable('post', [
+                'id' => 'pk',
+                'title' =>'string(255) not null' ,
+                'img' => 'string(255)' ,
+                'views' => 'integer(11) not null',
+                'order' => 'integer(11)',
+                'status' => 'integer(11) not null',
+                'content' => 'text',
+                'created_at' => 'integer(11) not null',
+                'updated_at' => 'integer(11) not null'
+             ])->execute();
+                     
+         } catch (Exception $e) {
+                         return;
+                                 
+         }
+       // $this->mockApplication()->runAction('/migrate/up',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
     }
 }
