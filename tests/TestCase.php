@@ -1,8 +1,10 @@
 <?php
 namespace zacksleo\yii2\post\tests;
+
 use Yii;
 use yii\helpers\ArrayHelper;
 use Faker\Factory;
+
 /**
  * This is the base class for all yii framework unit tests.
  */
@@ -43,7 +45,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
                     'class' => 'yii\db\Connection',
                     'dsn' => 'mysql:host=localhost:3306;dbname=test',
                     'username'=> 'root',
-                    'password'=> '206065'
+                    'password'=> '206065',
+                    'tablePrefix' => 'tb_'
                 ],
                 'i18n' => [
                     'translations' => [
@@ -73,6 +76,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
                     'dsn' => 'mysql:host=localhost:3306;dbname=test',
                     'username'=> 'root',
                     'password'=> '206065',
+                    'tablePrefix' => 'tb_'
                 ],
                 'i18n' => [
                     'translations' => [
@@ -108,30 +112,26 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
     protected function destroyTestDbData()
     {
-         $db = Yii::$app->getDb();
-         $res = $db->createCommand()->dropTable('post')->execute();
-       // $this->mockApplication()->runAction('/migrate/down',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
+        $db = Yii::$app->getDb();
+        $res = $db->createCommand()->dropTable('tb_post')->execute();
     }
     protected function createTestDbData()
     {
-         $db = Yii::$app->getDb();
-         try {
-             $db->createCommand()->createTable('post', [
+        $db = Yii::$app->getDb();
+        try {
+            $db->createCommand()->createTable('tb_post', [
                 'id' => 'pk',
                 'title' =>'string(255) not null' ,
                 'img' => 'string(255)' ,
                 'views' => 'integer(11) not null',
                 'order' => 'integer(11)',
-                'status' => 'integer(11) not null',
+                'status' => 'tinyint(1)',
                 'content' => 'text',
                 'created_at' => 'integer(11) not null',
                 'updated_at' => 'integer(11) not null'
              ])->execute();
-                     
-         } catch (Exception $e) {
-                         return;
-                                 
-         }
-       // $this->mockApplication()->runAction('/migrate/up',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
+        } catch (Exception $e) {
+            return;
+        }
     }
 }
