@@ -24,6 +24,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->destroyApplication();
         unset($this->model);
     }
+
     /**
      * Populates Yii::$app with a new application
      * The application will be destroyed on tearDown() automatically.
@@ -71,7 +72,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
                     'class' => 'yii\db\Connection',
                     'dsn' => 'mysql:host=localhost:3306;dbname=test',
                     'username'=> 'root',
-                    'password'=> '206065'
+                    'password'=> '206065',
                 ],
                 'i18n' => [
                     'translations' => [
@@ -107,10 +108,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
     protected function destroyTestDbData()
     {
+        $this->mockApplication()->runAction('/migrate/down',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
     }
     protected function createTestDbData()
     {
-
-        $this->mockApplication()->runAction('/migrate',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
+        $this->mockApplication()->runAction('/migrate/up',['migrationPath'=>'@zacksleo/yii2/post/migrations']);
     }
 }

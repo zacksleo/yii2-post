@@ -80,9 +80,17 @@ class PostModelTest extends TestCase
     //测试单个资讯
     public function testViewForBackend()
     {
-            $id=1;
+            $this->model->title='标题4';
+            $this->model->img='test.png';
+            $this->model->views=1496829063;
+            $this->model->created_at=1496829063;
+            $this->model->updated_at=1496829063;
+            $this->model->content='2017美国CES于拉斯维加斯当地时间1月5日正式拉开帷幕，国内A股上市的科技公司联络互动（002280）携多款智能新品首次参展。';
+            $this->model->status=1;
+            $this->model->order=null;
+            $id=$this->model->save();
             $view=$this->model->findOne($id);
-            $this->assertEquals('标题', $view['title']);
+            $this->assertEquals('1', $view['id']);
     }
     //测试资讯创建功能
     public function testCreateForBackend()
@@ -92,10 +100,11 @@ class PostModelTest extends TestCase
                 'img'=>'http://www.lianluo.com/images/xpcz_img.png',
                 'views'=>1496829063,
                 'created_at'=>1496829063,
-                'updated_at'=>'张明',
+                'updated_at'=>1496829063,
                 'content'=>'2017美国CES于拉斯维加斯当地时间1月5日正式拉开帷幕，国内A股上市的科技公司联络互动（002280）携多款智能新品首次参展。',
                 'status'=>1,
-                'order'=>null,]);
+                'order'=>null
+                ]);
             $this->assertTrue($this->model->save());
     }
     //测试资讯的修改功能
@@ -107,7 +116,7 @@ class PostModelTest extends TestCase
                 'img'=>'http://www.lianluo.com/images/xpcz_img.png',
                 'views'=>1496829063,
                 'created_at'=>1496829063,
-                'updated_at'=>'张明',
+                'updated_at'=>1496829063,
                 'content'=>'2017美国CES于拉斯维加斯当地时间1月5日正式拉开帷幕，国内A股上市的科技公司联络互动（002280）携多款智能新品首次参展。',
                 'status'=>1,
                 'order'=>null
@@ -115,18 +124,19 @@ class PostModelTest extends TestCase
             $this->assertTrue($this->model->save());
     }
     //测试资讯的删除功能
-  //  public function testDeleteForBackend()
-  //  {
-  //          $id=$this->model->setAttributes([
-  //              'title'=>'标题',
-  //              'img'=>'http://www.lianluo.com/images/xpcz_img.png',
-  //              'views'=>1496829063,
-  //              'created_at'=>1496829063,
-  //              'updated_at'=>'张明',
-  //              'content'=>'2017美国CES于拉斯维加斯当地时间1月5日正式拉开帷幕，国内A股上市的科技公司联络互动（002280）携多款智能新品首次参展。',
-  //              'status'=>1,
-  //              'order'=>null
-  //          ]);
-  //          $this->assertEquals('1', $this->model->findOne(2)->delete());
-  //  }
+    public function testDeleteForBackend()
+    {
+            $this->model->setAttributes([
+                'title'=>'标题',
+                'img'=>'test.png',
+                'views'=>1496829063,
+                'created_at'=>1496829063,
+                'updated_at'=>1496829063,
+                'content'=>'2017美国CES于拉斯维加斯当地时间1月5日正式拉开帷幕，国内A股上市的科技公司联络互动（002280）携多款智能新品首次参展。',
+                'status'=>1,
+                'order'=>null
+            ]);
+            $id=$this->model->save();
+            $this->assertEquals('1', $this->model->findOne(2)->delete());
+    }
 }
