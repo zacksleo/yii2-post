@@ -2,21 +2,27 @@
 namespace zacksleo\yii2\post\tests;
 use Yii;
 use yii\helpers\ArrayHelper;
+use Faker\Factory;
 /**
  * This is the base class for all yii framework unit tests.
  */
 class TestCase extends \PHPUnit_Framework_TestCase
 {
+    protected $model;
+    protected $faker;
+
     protected function setUp()
     {
         parent::setUp();
         $this->mockWebApplication();
         $this->createTestDbData();
+        $this->faker=Factory::create('zh_CN');
     }
     protected function tearDown()
     {
         $this->destroyTestDbData();
         $this->destroyApplication();
+        unset($this->model);
     }
     /**
      * Populates Yii::$app with a new application
