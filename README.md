@@ -1,14 +1,12 @@
 # yii2-post
 yii2 post module
-[![StyleCI](https://styleci.io/repos/99540308/shield?branch=master)](https://styleci.io/repos/99540308)
-[![Build Status](https://travis-ci.org/monster-hunter/yii2-settings.svg?branch=master)](https://travis-ci.org/monster-hunter/yii2-settings)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/monster-hunter/yii2-settings/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/monster-hunter/yii2-settings/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/monster-hunter/yii2-settings/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/monster-hunter/yii2-settings/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/monster-hunter/yii2-settings/badges/build.png?b=master)](https://scrutinizer-ci.com/g/monster-hunter/yii2-settings/build-status/master)
+[![StyleCI](https://styleci.io/repos/99547471/shield?branch=master)](https://styleci.io/repos/99547471)
+[![Build Status](https://travis-ci.org/Graychen/yii2-post.svg?branch=master)](https://travis-ci.org/Graychen/yii2-post)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Graychen/yii2-post/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Graychen/yii2-post/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Graychen/yii2-post/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Graychen/yii2-post/?branch=master)
 
-Yii2 post
 =============
-Yii2 Database settings
+Yii2 Database post
 
 Installation
 ------------
