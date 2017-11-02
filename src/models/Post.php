@@ -50,6 +50,7 @@ class Post extends \yii\db\ActiveRecord
                 'extensions' => 'png, jpg, gif, jpeg, bmp, svg, webp',
                 'maxFiles' => 1,
                 'maxSize' => 300000,
+                'tooBig' => '文件最大不能超过3MB',
                 'on' => ['insert', 'update']
             ],
         ];
